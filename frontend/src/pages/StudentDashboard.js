@@ -1,12 +1,17 @@
+// src/pages/InstructorDashboard.js
 import React from 'react';
+import CourseManagement from '../components/InstructorDashboard/CourseManagement';
+import InstructorLayout from '../components/InstructorDashboard/Layout';
 
-const StudentDashboard = () => {
+const InstructorDashboard = () => {
   return (
-    <div>
-      <h2>Dashboard Sinh Viên Thường</h2>
-      {/* Thêm các chức năng cho sinh viên thường ở đây */}
-    </div>
+    <InstructorLayout>
+      <div className="container-fluid">
+        <h2 className="mb-4">Dashboard Giảng Viên</h2>
+        <CourseManagement />
+      </div>
+    </InstructorLayout>
   );
 };
 
-export default StudentDashboard;
+export default InstructorDashboard;

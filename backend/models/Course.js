@@ -8,15 +8,21 @@ const courseSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true
+    required: true,
+    maxLength: 100 // Giới hạn 10 từ
   },
-  price: {
-    type: Number,
-    default: 0
+  image: {
+    type: String,
+    required: true
   },
   isPremium: {
     type: Boolean,
     default: false
+  },
+  category: {
+    type: String,
+    required: true,
+    enum: ['Frontend', 'Backend', 'Database', 'Mobile', 'Other'] // Các categories
   },
   instructor: {
     type: mongoose.Schema.Types.ObjectId,
