@@ -15,7 +15,23 @@ const Sidebar = () => {
       path: '/instructor/courses',
       label: 'Quản lý Khóa học',
       icon: 'bi bi-book'
+    },
+    {
+      path: '/instructor/coursesVideo',
+      label: 'Quản lí bài giảng video',
+      icon: 'bi bi-book'
+    },
+    {
+      path: '/instructor/coursesTheory',
+      label: 'Quản lý bài giảng Lý thuyết',
+      icon: 'bi bi-book'
+    },
+    {
+      path: '/instructor/coursesStudent',
+      label: 'Quản lý học viên khóa học',
+      icon: 'bi bi-book'
     }
+    
   ];
 
   return (

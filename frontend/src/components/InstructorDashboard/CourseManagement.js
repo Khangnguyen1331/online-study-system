@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteInstructorCourse, getInstructorCourses } from '../../redux/actions/instructorActions';
 import CourseForm from './CourseForm';
 
+
+
 const CourseManagement = () => {
   const dispatch = useDispatch();
   const { courses, error } = useSelector(state => state.instructor);

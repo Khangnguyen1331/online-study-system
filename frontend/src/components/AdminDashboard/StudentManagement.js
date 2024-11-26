@@ -1,4 +1,5 @@
 // src/components/AdminDashboard/StudentManagement.js
+
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -7,6 +8,50 @@ import {
   setCurrentPage,
   updateStudentPremium
 } from '../../redux/actions/adminActions';
+
+// Thêm mock students
+const mockStudents = [
+  {
+    _id: 'mock1',
+    name: 'Nguyễn Văn A',
+    email: 'vana@example.com',
+    phone: '0912345678',
+    createdAt: '2024-04-01T10:00:00Z',
+    isPremium: false,
+  },
+  {
+    _id: 'mock2',
+    name: 'Trần Thị B',
+    email: 'thib@example.com',
+    phone: '0987654321',
+    createdAt: '2024-04-02T11:30:00Z',
+    isPremium: true,
+  },
+  {
+    _id: 'mock3',
+    name: 'Lê Văn C',
+    email: 'vanc@example.com',
+    phone: '0934567890',
+    createdAt: '2024-04-03T09:15:00Z',
+    isPremium: false,
+  },
+  {
+    _id: 'mock4',
+    name: 'Phạm Thị D',
+    email: 'thid@example.com',
+    phone: '0956789012',
+    createdAt: '2024-04-04T14:45:00Z',
+    isPremium: true,
+  },
+  {
+    _id: 'mock5',
+    name: 'Hoàng Văn E',
+    email: 'vane@example.com',
+    phone: '0978901234',
+    createdAt: '2024-04-05T08:20:00Z',
+    isPremium: false,
+  },
+];
 
 const StudentManagement = () => {
   const dispatch = useDispatch();
@@ -33,7 +78,9 @@ const StudentManagement = () => {
   // Xử lý chọn nhiều sinh viên
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-      setSelectedStudents(students.map(s => s._id));
+      // Kết hợp students từ Redux và mockStudents
+      const allStudentIds = [...students, ...mockStudents].map(s => s._id);
+      setSelectedStudents(allStudentIds);
     } else {
       setSelectedStudents([]);
     }
@@ -74,6 +121,9 @@ const StudentManagement = () => {
       <span className="visually-hidden">Loading...</span>
     </div>
   </div>;
+
+  // Kết hợp students từ Redux và mockStudents
+  const combinedStudents = [...students, ...mockStudents];
 
   return (
     <div className="card">
@@ -123,7 +173,7 @@ const StudentManagement = () => {
                 <th>
                   <input
                     type="checkbox"
-                    checked={selectedStudents.length === students.length}
+                    checked={selectedStudents.length === combinedStudents.length}
                     onChange={handleSelectAll}
                     className="form-check-input"
                   />
@@ -138,54 +188,60 @@ const StudentManagement = () => {
               </tr>
             </thead>
             <tbody>
-              {students.map((student, index) => (
-                <tr key={student._id}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedStudents.includes(student._id)}
-                      onChange={() => handleSelectOne(student._id)}
-                      className="form-check-input"
-                    />
-                  </td>
-                  <td>{(currentPage - 1) * 8 + index + 1}</td>
-                  <td>{student.name}</td>
-                  <td>{student.email}</td>
-                  <td>{student.phone}</td>
-                  <td>{new Date(student.createdAt).toLocaleDateString()}</td>
-                  <td>
-                    <div className="form-check form-switch">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        checked={student.isPremium}
-                        onChange={() => handlePremiumToggle(student._id, student.isPremium)}
-                      />
-                      <label className="form-check-label">
-                        {student.isPremium ? 'Premium' : 'Regular'}
-                      </label>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="btn-group btn-group-sm">
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => handleDelete(student._id)}
-                        title="Xóa"
-                      >
-                        <i className="bi bi-trash"></i>
-                      </button>
-                      <button
-                        className="btn btn-warning"
-                        onClick={() => handlePremiumToggle(student._id, student.isPremium)}
-                        title={student.isPremium ? 'Hủy Premium' : 'Nâng cấp Premium'}
-                      >
-                        <i className={`bi bi-star${student.isPremium ? '-fill' : ''}`}></i>
-                      </button>
-                    </div>
-                  </td>
+              {combinedStudents.length === 0 ? (
+                <tr>
+                  <td colSpan="8" className="text-center">Không có dữ liệu sinh viên.</td>
                 </tr>
-              ))}
+              ) : (
+                combinedStudents.map((student, index) => (
+                  <tr key={student._id}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedStudents.includes(student._id)}
+                        onChange={() => handleSelectOne(student._id)}
+                        className="form-check-input"
+                      />
+                    </td>
+                    <td>{(currentPage - 1) * 8 + index + 1}</td>
+                    <td>{student.name}</td>
+                    <td>{student.email}</td>
+                    <td>{student.phone}</td>
+                    <td>{new Date(student.createdAt).toLocaleDateString()}</td>
+                    <td>
+                      <div className="form-check form-switch">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          checked={student.isPremium}
+                          onChange={() => handlePremiumToggle(student._id, student.isPremium)}
+                        />
+                        <label className="form-check-label">
+                          {student.isPremium ? 'Premium' : 'Regular'}
+                        </label>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="btn-group btn-group-sm">
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => handleDelete(student._id)}
+                          title="Xóa"
+                        >
+                          <i className="bi bi-trash"></i>
+                        </button>
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => handlePremiumToggle(student._id, student.isPremium)}
+                          title={student.isPremium ? 'Hủy Premium' : 'Nâng cấp Premium'}
+                        >
+                          <i className={`bi bi-star${student.isPremium ? '-fill' : ''}`}></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
